@@ -17,8 +17,7 @@ import jar.dto.R;
 @CrossOrigin("*")
 public class Index {
 
-    // @GetMapping("/")
-    @PostMapping("/")
+    @org.springframework.web.bind.annotation.RequestMapping(value = "/", method = {org.springframework.web.bind.annotation.RequestMethod.GET, org.springframework.web.bind.annotation.RequestMethod.POST})
     R res() {
 
         return new R();

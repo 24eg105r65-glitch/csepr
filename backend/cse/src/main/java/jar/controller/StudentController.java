@@ -1,7 +1,6 @@
 package jar.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,45 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jar.model.Student;
-import jar.repo.StudentRepo;
+import jar.service.StudentService;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class StudentController {
 
-    @GetMapping()
-    Map<Object, Object> m1() {
-        Map<Object, Object> res = new HashMap<>();
-
-        res.put("msg", "Get api");
-        res.put("list", getAllStudents());
-
-        return res;
-    }
-
     @Autowired
-    StudentRepo db;
+    private StudentService studentService;
 
-    @PostMapping()
-    Map<Object, Object> m2(@RequestBody Student s) {
-        Map<Object, Object> res = new HashMap<>();
-        res.put("msg", "Post api");
-        String name = s.getName();
-        String roll = s.getRoll();
-        String ip = s.getIp();
-        Student obj = new Student();
-
-        obj.setName(name);
-        obj.setRoll(roll);
-        obj.setIp(ip);
-
-        db.save(obj);
-
-        return res;
+    @GetMapping
+    public Map<String, Object> getAllStudents() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("msg", "Get api");
+        response.put("list", studentService.getAllStudents());
+        return response;
     }
 
-    List<Student> getAllStudents() {
-        return db.findAll();
+    @PostMapping
+    public Map<String, Object> createStudent(@RequestBody Student student) {
+        Map<String, Object> response = new HashMap<>();
+        studentService.saveStudent(student);
+        response.put("msg", "Post api");
+        return response;
     }
 }

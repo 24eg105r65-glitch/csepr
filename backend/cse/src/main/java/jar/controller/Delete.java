@@ -7,23 +7,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jar.repo.StudentRepo;
+import jar.service.StudentService;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class Delete {
 
     @Autowired
-    StudentRepo db;
+    private StudentService studentService;
 
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable long id) {
-        if (db.existsById(id)) {
-            db.deleteById(id);
-            return "Student deleted successfully";
-        } else {
-            return "Student not found";
+        boolean isDeleted = studentService.deleteStudent(id);
+        if (isDeleted) {
+            return "Student deleted ";
         }
+        return "Student not found";
     }
 }
